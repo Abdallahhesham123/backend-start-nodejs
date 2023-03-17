@@ -3,6 +3,7 @@ import { asyncHandler } from "../../../utils/errorHandling.js";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from 'url';
+import cloudinary from "../../../utils/cloudinary.js";
 export const getUser = async (req, res, next) => {
   try {
     const users = await UserModel.find();
@@ -68,8 +69,14 @@ export const findOneAndDelete = asyncHandler(async (req, res, next) => {
 
 export const profilePicUpdated = asyncHandler(async (req, res, next) => {
 
-const user = await UserModel.findByIdAndUpdate(req.user._id,{Profilepic:req.file.dest})
+  const {secure_url ,public_id} =await cloudinary.uploader.upload(req.file.path, {folder:`user/${req.user._id}/profilePic`})
 
+const user = await UserModel.findByIdAndUpdate(
+  req.user._id,
+  {Profilepic:secure_url , Profilepic_id:public_id} ,
+  {new:false}
+  )
+  await cloudinary.uploader.destroy(user.Profilepic_id)
  return res.json({ message: "Done",user })
 
     

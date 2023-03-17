@@ -20,7 +20,8 @@ const userSchema = new Schema(
     age: Number,
     phone: String,
     Profilepic: String,
-    Coverpic: [String],
+    Profilepic_id:String,
+    Coverpic: [],
     confirmEmail: {
       type: Boolean,
       default: false,

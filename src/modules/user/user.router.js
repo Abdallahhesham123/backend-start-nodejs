@@ -3,12 +3,18 @@ import * as userController from  './controller/user.js'
 import { AuthUser } from '../../middleware/auth.js';
 import { validation } from '../../middleware/validation.js';
 import {  updateSchema ,headersSchema, profilePic } from "./crudValidationuser.js";
-import { fileupload, fileValidation } from '../../utils/multer.js';
+// import { fileupload, fileValidation } from '../../utils/multer.js';
+import { fileupload, fileValidation } from '../../utils/cloudMulter.js';
 const router = Router();
 
+// router.patch("/profilePic",
+// fileupload('user/profile',fileValidation.image).single("image")
+// ,AuthUser ,validation(profilePic), userController.profilePicUpdated)
+
 router.patch("/profilePic",
-fileupload('user/profile',fileValidation.image).single("image")
+fileupload(fileValidation.image).single("image")
 ,AuthUser ,validation(profilePic), userController.profilePicUpdated)
+
 router.get("/" , userController.getUser)
 router.get("/getProfile" ,  AuthUser,userController.getProfile)
 
